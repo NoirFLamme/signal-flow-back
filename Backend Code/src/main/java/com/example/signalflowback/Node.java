@@ -4,8 +4,8 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Node {
-     final String name;
-     final ArrayList<Edge> edgeArrayList;
+     String name;
+     ArrayList<Edge> edgeArrayList;
 
 
 
@@ -21,4 +21,14 @@ public class Node {
     public ArrayList<Edge> getEdgeArrayList() {
         return edgeArrayList;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setEdgeArrayList(ArrayList<Edge> edgeArrayList) {
+        this.edgeArrayList = edgeArrayList;
+    }
+
+    public int getID(){ return Integer.parseInt(this.name)-1;}
 }

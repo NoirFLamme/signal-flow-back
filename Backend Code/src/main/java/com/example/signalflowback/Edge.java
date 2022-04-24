@@ -18,3 +18,8 @@ public class Edge {
         return toNode;
     }
 }
+
+
+//forward paths
+//all loops
+//all non-touching loops combinations
