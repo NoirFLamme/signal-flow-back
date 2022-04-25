@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class Node {
      final String name;
-     final ArrayList<Edge> edgeArrayList;
+     ArrayList<Edge> edgeArrayList;
 
 
 
@@ -20,5 +20,9 @@ public class Node {
 
     public ArrayList<Edge> getEdgeArrayList() {
         return edgeArrayList;
+    }
+
+    public void setEdgeArrayList(ArrayList<Edge> edgeArrayList) {
+        this.edgeArrayList = edgeArrayList;
     }
 }
