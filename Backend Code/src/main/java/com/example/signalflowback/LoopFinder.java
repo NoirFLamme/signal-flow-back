@@ -253,4 +253,50 @@ public class LoopFinder {
         }
     }
 
+    private ArrayList<LinkedList<Loop>> findNTLs(ArrayList<Loop> loops)
+    {
+        ArrayList<LinkedList<Loop>> nonTouching = new ArrayList<>();
+        ArrayList<Boolean> nonTouchingbool = new ArrayList<>();
+        boolean flag = false;
+        for (int i = 0; i < loops.size(); i++)
+        {
+            nonTouching.add(new LinkedList<>());
+            nonTouchingbool.add(false);
+        }
+
+        for (int i = 0; i < loops.size(); i++)
+        {
+            nonTouching.get(0).add(loops.get(i));
+        }
+
+        int j = 0;
+
+        while (true) {
+            flag = false;
+            for (int i = 0; i < nonTouching.get(0).size(); i++) {
+                int l = 0;
+                if(j == 0)
+                    l = i + 1;
+                for (l = l; l < nonTouching.get(j).size(); l++)
+                {
+                    if (this.areNT(nonTouching.get(0).get(i), nonTouching.get(j).get(l)))
+                    {
+                        flag = true;
+                        ArrayList<String> mergedLoops = new ArrayList<>(nonTouching.get(0).get(i).loopNodes);
+                        mergedLoops.addAll(nonTouching.get(j).get(l).loopNodes);
+                        double mergedGains = nonTouching.get(0).get(i).gain * nonTouching.get(j).get(l).gain;
+                        nonTouching.get(j + 1).add(new Loop(mergedLoops, mergedGains));
+                    }
+                }
+            }
+            if (!flag)
+            {
+                break;
+            }
+            j++;
+        }
+
+        return nonTouching;
+    }
+
 }
