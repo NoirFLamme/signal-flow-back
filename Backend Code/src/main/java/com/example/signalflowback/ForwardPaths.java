@@ -6,6 +6,7 @@ import java.util.ArrayList;
 public class ForwardPaths {
     ArrayList<String> path;
     double gain;
+    double delta;
 
     public ForwardPaths(ArrayList<String> path, double gain) {
         this.path = path;

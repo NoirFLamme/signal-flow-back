@@ -241,12 +241,16 @@ public class LoopFinder {
 
         ArrayList<Node> nodes = new ArrayList<>(Arrays.asList(n1, n2, n3, n4, n5, n6, n7, n8, n9));
         LoopFinder myclass = new LoopFinder(nodes);
+        Forward yes = new Forward();
+        yes.getAllPaths(nodes);
+        ArrayList<ForwardPaths> paths = yes.forwardPaths;
         ArrayList<Loop> loops = myclass.findAllLoops();
         System.out.println("Loops:");
         printLoopList(loops);
         System.out.println("Non Touching Loops:");
         ArrayList<LinkedList<NTLoopsCombination>> nt = myclass.findNTLs(loops);
         printNT(nt);
+        System.out.println(myclass.getOverallDelta(loops, nt));
 
     }
 
@@ -305,6 +309,28 @@ public class LoopFinder {
         }
 
         return nonTouching;
+    }
+
+    private double getOverallDelta(ArrayList<Loop> loops, ArrayList<LinkedList<NTLoopsCombination>> nonTouching)
+    {
+        double overallDelta = 1;
+
+        for (int i = 0; i < loops.size(); i++)
+        {
+           overallDelta -= loops.get(i).gain;
+        }
+
+        int sign = 1;
+        for (int i = 0; i < nonTouching.size(); i++)
+        {
+            for (int j = 0; j < nonTouching.get(i).size(); j++)
+            {
+                overallDelta += (sign) * (nonTouching.get(i).get(j).gain);
+            }
+            sign *= -1;
+        }
+
+        return overallDelta;
     }
 
 }
