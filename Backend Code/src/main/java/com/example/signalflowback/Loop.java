@@ -1,20 +1,23 @@
 package com.example.signalflowback;
 
+import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
-import java.util.Stack;
 
 public class Loop {
-    String loopNodes;
+    ArrayList<String> loopNodes;
     double gain;
 
-    public Loop(Deque<String> nodeStack, double gain) {
-        Deque<String> copyOfStack = new LinkedList<>(nodeStack);
-        StringBuilder loopNodes = new StringBuilder();
-        while (!copyOfStack.isEmpty()) loopNodes.append(copyOfStack.removeLast());
-        this.loopNodes = loopNodes.toString();
+    public Loop(Deque<Node> nodeStack, double gain) {
+        Deque<Node> copyOfStack = new LinkedList<>(nodeStack);
+        this.loopNodes = new ArrayList<>();
+        while (!copyOfStack.isEmpty()) this.loopNodes.add(copyOfStack.removeLast().name);
         this.gain = gain;
     }
-//loopNodes reverse
-//gain case when true
+
+    public Loop(ArrayList<String> loopNodes, double gain) {
+        this.loopNodes = loopNodes;
+        this.gain = gain;
+    }
 }
+

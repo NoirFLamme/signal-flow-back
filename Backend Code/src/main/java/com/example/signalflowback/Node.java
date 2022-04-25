@@ -31,4 +31,8 @@ public class Node {
     }
 
     public int getID(){ return Integer.parseInt(this.name)-1;}
+
+    public Node getItWithoutEdges(){
+        return new Node(this.name,new ArrayList<>());
+    }
 }

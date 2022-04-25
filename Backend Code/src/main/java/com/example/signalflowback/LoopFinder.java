@@ -4,15 +4,17 @@ package com.example.signalflowback;
 import org.springframework.stereotype.Service;
 import java.util.*;
 
+import static java.lang.Thread.sleep;
+
 @Service
 public class LoopFinder {
 
-    final  ArrayList<Node> graph;
+    final ArrayList<Node> graph;
     final int size;
     double gainAccumulator;
     Set<Node> blockedSet;
     Map<Node, Set<Node>> blockedMap;
-    Deque<String> stack;
+    Deque<Node> stack;
     ArrayList<Loop> loops;
 
     public LoopFinder(ArrayList<Node> graph) {
@@ -24,8 +26,8 @@ public class LoopFinder {
 //2 -> 3,4
 //3 -> 0
 //4 -> 2
-    //link: https://github.com/mission-peace/interview/blob/master/src/com/interview/graph/AllCyclesInDirectedGraphJohnson.java
-    public ArrayList<Loop> findLoops() {
+//link: https://github.com/mission-peace/interview/blob/master/src/com/interview/graph/AllCyclesInDirectedGraphJohnson.java
+    public ArrayList<Loop> findAllLoops() {
         blockedSet = new HashSet<>();
         blockedMap = new HashMap<>();
         stack = new LinkedList<>();
@@ -40,7 +42,7 @@ public class LoopFinder {
                 Node leastVertex = maybeLeastNode.get();
                 blockedSet.clear();
                 blockedMap.clear();
-                findCyclesInSCG(leastVertex, leastVertex);
+                findLoopsInSCG(leastVertex, leastVertex);
                 startIndex = leastVertex.getID() + 1;
             } else {
                 break;
@@ -84,15 +86,15 @@ public class LoopFinder {
         return Optional.of(minVertex);
     }
 
-    private boolean findCyclesInSCG(Node startNode,Node currentNode) {
+    private boolean findLoopsInSCG(Node startNode, Node currentNode) {
         boolean foundCycle = false;
-        stack.push(currentNode.name);
+        stack.push(currentNode.getItWithoutEdges());
         blockedSet.add(currentNode);
         if (startNode==currentNode) gainAccumulator = 1;
         for (Edge e : currentNode.edgeArrayList) {
             Node neighbor = e.toNode;
             if (neighbor == startNode) {
-                stack.push(startNode.name);
+                stack.push(startNode.getItWithoutEdges());
                 gainAccumulator *= e.gain;
                 Loop loop = new Loop(stack,gainAccumulator);
                 gainAccumulator /= e.gain;
@@ -101,7 +103,7 @@ public class LoopFinder {
                 foundCycle = true;
             }else if (!blockedSet.contains(neighbor)) {
                 gainAccumulator *= e.gain;
-                boolean gotCycle = findCyclesInSCG(startNode, neighbor);
+                boolean gotCycle = findLoopsInSCG(startNode, neighbor);
                 gainAccumulator /= e.gain;
                 foundCycle = foundCycle || gotCycle;
             }
@@ -134,7 +136,21 @@ public class LoopFinder {
         }
     }
 
-    public static void main(String[] args){
+
+    private boolean areNT (Loop l1,Loop l2){
+        for (int i=0;i<l1.loopNodes.size();i++ ){
+            for (int j=0;j<l2.loopNodes.size();j++){
+                if ((l1.loopNodes.get(i)).equals(l2.loopNodes.get(j))){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+
+
+    public static void main(String[] args) throws InterruptedException {
 //        System.out.println("Test 1");
 //        ArrayList<Edge> empty = new ArrayList<>();
 //        Node n0 = new Node ("1",empty);
@@ -181,7 +197,6 @@ public class LoopFinder {
         Node n8 = new Node ("8",empty);
         Node n9 = new Node ("9",empty);
         Edge e12 = new Edge(15,n2);
-        Edge e15 = new Edge(1,n5);
         Edge e18 = new Edge( 3,n8);
         Edge e23 = new Edge( 8,n3);
         Edge e27 = new Edge( 5,n7);
@@ -197,7 +212,6 @@ public class LoopFinder {
         Edge e98 = new Edge(-2,n8);
         ArrayList<Edge> el1 = new ArrayList<>();
         el1.add(e12);
-        el1.add(e15);
         el1.add(e18);
         n1.setEdgeArrayList(el1);
         ArrayList<Edge> el2 = new ArrayList<>();
@@ -229,14 +243,14 @@ public class LoopFinder {
 
         ArrayList<Node> nodes = new ArrayList<>(Arrays.asList(n1,n2,n3,n4,n5,n6,n7,n8,n9));
         LoopFinder myclass = new LoopFinder(nodes);
-        ArrayList<Loop> loops = myclass.findLoops();
+        ArrayList<Loop> loops = myclass.findAllLoops();
         printLoopList(loops);
-
     }
 
     private static void printLoopList(ArrayList<Loop> loops){
         for (Loop l : loops){
-            System.out.println(l.loopNodes + " " + l.gain);
+            System.out.println(l.loopNodes.toString() + " " + l.gain);
         }
     }
+
 }
