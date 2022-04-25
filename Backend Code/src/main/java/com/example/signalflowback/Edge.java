@@ -17,6 +17,8 @@ public class Edge {
     public Node getToNode() {
         return toNode;
     }
+
+
 }
 
 
