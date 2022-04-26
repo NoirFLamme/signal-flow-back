@@ -29,21 +29,21 @@ public class SignalController {
         return this.service.returnLoops();
     }
 
-    @GetMapping("/mason/paths")
-    public ArrayList<ForwardPaths> getPaths()
-    {
-        return this.service.returnFPs();
-    }
-
     @GetMapping("/mason/ntloops")
     public ArrayList<LinkedList<NTLoopsCombination>> getNT()
     {
         return this.service.returnNTloops();
     }
 
-    @GetMapping("/mason/delta")
-    public double getDelta()
+    @GetMapping("/mason/paths")
+    public ArrayList<ForwardPaths> getPaths()
     {
-        return this.service.returnOverallDelta();
+        return this.service.returnFPs();
+    }
+
+    @GetMapping("/mason/tf")
+    public double getTF()
+    {
+        return this.service.returnTF();
     }
 }

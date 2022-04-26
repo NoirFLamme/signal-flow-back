@@ -19,6 +19,7 @@ public class MasonSolver {
     ArrayList<Loop> loops;
     ArrayList<LinkedList<NTLoopsCombination>> ntLoops;
     double overallDelta;
+    double tf;
 
     public MasonSolver(ArrayList<Node> graph, String start, String end)
     {
@@ -29,6 +30,7 @@ public class MasonSolver {
         this.paths = this.pathFinder.getAllPaths(graph, start, end);
         this.evaluator.getPathDelta(this.loops, this.ntLoops,this.paths);
         this.overallDelta = this.evaluator.getOverallDelta(this.loops, this.ntLoops);
+        this.tf = this.evaluator.getTF(this.overallDelta,this.paths);
     }
 
     public ArrayList<Loop> returnLoops()
@@ -46,9 +48,10 @@ public class MasonSolver {
         return ntLoops;
     }
 
-    public double returnOverallDelta()
+    public double returnTF()
     {
-        return this.overallDelta;
+        return this.tf;
     }
-    
+
+
 }
