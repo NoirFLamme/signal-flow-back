@@ -1,28 +1,35 @@
 package com.example.signalflowback;
 
+import com.example.signalflowback.createdDSs.Edge;
+import com.example.signalflowback.createdDSs.ForwardPaths;
+import com.example.signalflowback.createdDSs.Node;
+
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 
-public class Forward {
+public class ForwardFinder {
 
 
     ArrayList<String> pathAcc = new ArrayList<>();
     double gainAcc = 1;
     ArrayList<ForwardPaths> forwardPaths = new ArrayList<>();
-    public void getAllPaths(ArrayList<Node> graph, String start, String end)
+    public ArrayList<ForwardPaths> getAllPaths(ArrayList<Node> graph, String start, String end)
     {
         boolean[] isVisited = new boolean[graph.size()];
         swap(graph, start, end);
-        pathAcc.add(graph.get(0).name);
+        pathAcc.add(graph.get(0).getName());
 
         printAllPathsUtil(0, graph.size() - 1, isVisited, graph);
 
         for (ForwardPaths i: forwardPaths
              ) {
-            System.out.println(i.path);
-            System.out.println(i.gain);
+            System.out.println(i.getPath());
+            System.out.println(i.getGain());
         }
+
+
+
+        return forwardPaths;
     }
 
     private void swap(ArrayList<Node> a, String start, String end)
@@ -31,11 +38,11 @@ public class Forward {
         int endIndex = a.size() - 1;
         for (int i = 0; i < a.size(); i++)
         {
-            if (a.get(i).name.equals(start))
+            if (a.get(i).getName().equals(start))
             {
                 startIndex = i;
             }
-            if (a.get(i).name.equals(end))
+            if (a.get(i).getName().equals(end))
             {
                 endIndex = i;
             }
@@ -67,18 +74,18 @@ public class Forward {
 
         // Recur for all the vertices
         // adjacent to current vertex
-        for (Edge i : graph.get(u).edgeArrayList) {
-            if (!isVisited[graph.indexOf(i.toNode)]) {
+        for (Edge i : graph.get(u).getEdgeArrayList()) {
+            if (!isVisited[graph.indexOf(i.getToNode())]) {
                 // store current node
                 // in path[]
-                pathAcc.add(i.toNode.name);
-                gainAcc *= i.gain;
-                printAllPathsUtil(graph.indexOf(i.toNode), d, isVisited, graph);
+                pathAcc.add(i.getToNode().getName());
+                gainAcc *= i.getGain();
+                printAllPathsUtil(graph.indexOf(i.getToNode()), d, isVisited, graph);
 
                 // remove current node
                 // in path[]
-                gainAcc /= i.gain;
-                pathAcc.remove(i.toNode.name);
+                gainAcc /= i.getGain();
+                pathAcc.remove(i.getToNode().getName());
             }
         }
 
@@ -116,7 +123,7 @@ public class Forward {
         el4.add(e42);
         n4.setEdgeArrayList(el4);
         ArrayList<Node> nodes = new ArrayList<>(Arrays.asList(n0,n1,n2,n3,n4));
-        Forward yes = new Forward();
+        ForwardFinder yes = new ForwardFinder();
 
     }
 }

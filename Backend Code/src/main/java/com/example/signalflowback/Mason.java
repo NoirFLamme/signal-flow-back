@@ -1,13 +1,13 @@
 package com.example.signalflowback;
 
 
-import org.springframework.stereotype.Service;
+import com.example.signalflowback.createdDSs.*;
+
 import java.util.*;
 
 import static java.lang.Thread.sleep;
 
-@Service
-public class LoopFinder {
+public class Mason {
 
     final ArrayList<Node> graph;
     final int size;
@@ -17,7 +17,7 @@ public class LoopFinder {
     Deque<Node> stack;
     ArrayList<Loop> loops;
 
-    public LoopFinder(ArrayList<Node> graph) {
+    public Mason(ArrayList<Node> graph) {
         this.graph = graph;
         this.size = graph.size();
     }
@@ -56,7 +56,7 @@ public class LoopFinder {
         ArrayList<Node> subGraph = new ArrayList<>();
         for (int i = startVertex; i < size; i++) subGraph.add(graph.get(i));
         for (Node n : subGraph) {
-            n.edgeArrayList.removeIf(e -> e.toNode.getID() < startVertex);
+            n.getEdgeArrayList().removeIf(e -> e.getToNode().getID() < startVertex);
         }
         return subGraph;
     }
@@ -82,7 +82,7 @@ public class LoopFinder {
         }
         for (Node n : graphScc) {
             ArrayList<Node> finalMinScc = minScc;
-            n.edgeArrayList.removeIf(e -> !finalMinScc.contains(e.toNode));
+            n.getEdgeArrayList().removeIf(e -> !finalMinScc.contains(e.getToNode()));
         }
         return Optional.of(minVertex);
     }
@@ -92,28 +92,28 @@ public class LoopFinder {
         stack.push(currentNode.getItWithoutEdges());
         blockedSet.add(currentNode);
         if (startNode == currentNode) gainAccumulator = 1;
-        for (Edge e : currentNode.edgeArrayList) {
-            Node neighbor = e.toNode;
+        for (Edge e : currentNode.getEdgeArrayList()) {
+            Node neighbor = e.getToNode();
             if (neighbor == startNode) {
                 stack.push(startNode.getItWithoutEdges());
-                gainAccumulator *= e.gain;
+                gainAccumulator *= e.getGain();
                 Loop loop = new Loop(stack, gainAccumulator);
-                gainAccumulator /= e.gain;
+                gainAccumulator /= e.getGain();
                 stack.pop();
                 loops.add(loop);
                 foundCycle = true;
             } else if (!blockedSet.contains(neighbor)) {
-                gainAccumulator *= e.gain;
+                gainAccumulator *= e.getGain();
                 boolean gotCycle = findLoopsInSCG(startNode, neighbor);
-                gainAccumulator /= e.gain;
+                gainAccumulator /= e.getGain();
                 foundCycle = foundCycle || gotCycle;
             }
         }
         if (foundCycle) {
             unblock(currentNode);
         } else {
-            for (Edge e : currentNode.edgeArrayList) {
-                Node w = e.toNode;
+            for (Edge e : currentNode.getEdgeArrayList()) {
+                Node w = e.getToNode();
                 Set<Node> bSet = blockedMap.computeIfAbsent(w, (key) -> new HashSet<>());
                 bSet.add(currentNode);
             }
@@ -240,8 +240,8 @@ public class LoopFinder {
         n9.setEdgeArrayList(el9);
 
         ArrayList<Node> nodes = new ArrayList<>(Arrays.asList(n1, n2, n3, n4, n5, n6, n7, n8, n9));
-        LoopFinder myclass = new LoopFinder(nodes);
-        Forward yes = new Forward();
+        Mason myclass = new Mason(nodes);
+        ForwardFinder yes = new ForwardFinder();
         yes.getAllPaths(nodes, "1", "7");
         ArrayList<ForwardPaths> paths = yes.forwardPaths;
         ArrayList<Loop> loops = myclass.findAllLoops();
@@ -259,14 +259,14 @@ public class LoopFinder {
 
     private static void printLoopList(ArrayList<Loop> loops) {
         for (Loop l : loops) {
-            System.out.println(l.loopNodes.toString() + " " + l.gain);
+            System.out.println(l.getLoopNodes().toString() + " " + l.getGain());
         }
     }
 
     private static void printNT(ArrayList<LinkedList<NTLoopsCombination>> nts) {
         for (LinkedList<NTLoopsCombination> ll : nts) {
             for (NTLoopsCombination l : ll){
-                System.out.println(l.nodesAfterJoining.toString() + " " + l.gain);
+                System.out.println(l.getNodesAfterJoining().toString() + " " + l.getGain());
             }
         }
     }
@@ -277,10 +277,10 @@ public class LoopFinder {
         for (int i = 0; i < loops.size()-1; i++) nonTouching.add(new LinkedList<>());
         for ( int i=0;i< loops.size();i++){
             for (int j=i+1;j< loops.size();j++){
-                if (this.areNT(loops.get(i).loopNodes, loops.get(j).loopNodes)) {
-                    Set<String> mergedLoops = new HashSet<>(loops.get(i).loopNodes);
-                    mergedLoops.addAll(loops.get(j).loopNodes);
-                    double mergedGains = loops.get(i).gain * loops.get(j).gain;
+                if (this.areNT(loops.get(i).getLoopNodes(), loops.get(j).getLoopNodes())) {
+                    Set<String> mergedLoops = new HashSet<>(loops.get(i).getLoopNodes());
+                    mergedLoops.addAll(loops.get(j).getLoopNodes());
+                    double mergedGains = loops.get(i).getGain() * loops.get(j).getGain();
                     Set<Loop> mergeSet = new HashSet<>();
                     mergeSet.add(loops.get(i));
                     mergeSet.add(loops.get(j));
@@ -293,14 +293,14 @@ public class LoopFinder {
             foundCombination = false;
             for (int iOLoop = 0; iOLoop < loops.size(); iOLoop++) {
                 for (int j = 0; j < nonTouching.get(i).size(); j++) {
-                    if (this.areNT(loops.get(iOLoop).loopNodes, (ArrayList<String>) nonTouching.get(i).get(j).nodesAfterJoining)) {
+                    if (this.areNT(loops.get(iOLoop).getLoopNodes(), (ArrayList<String>) nonTouching.get(i).get(j).getNodesAfterJoining())) {
                         foundCombination = true;
-                        Set<String> mergedLoops = new HashSet<>(loops.get(iOLoop).loopNodes);
-                        mergedLoops.addAll(nonTouching.get(i).get(j).nodesAfterJoining);
-                        double mergedGains = loops.get(iOLoop).gain * nonTouching.get(i).get(j).gain;
+                        Set<String> mergedLoops = new HashSet<>(loops.get(iOLoop).getLoopNodes());
+                        mergedLoops.addAll(nonTouching.get(i).get(j).getNodesAfterJoining());
+                        double mergedGains = loops.get(iOLoop).getGain() * nonTouching.get(i).get(j).getGain();
                         Set<Loop> mergeSet = new HashSet<>();
                         mergeSet.add(loops.get(i));
-                        mergeSet.addAll(nonTouching.get(i).get(j).NTLoops);
+                        mergeSet.addAll(nonTouching.get(i).get(j).getNTLoops());
                         nonTouching.get(i).add(new NTLoopsCombination(mergedGains,mergeSet,mergedLoops));
                     }
                 }
@@ -314,13 +314,13 @@ public class LoopFinder {
         return nonTouching;
     }
 
-    private double getOverallDelta(ArrayList<Loop> loops, ArrayList<LinkedList<NTLoopsCombination>> nonTouching)
+    public double getOverallDelta(ArrayList<Loop> loops, ArrayList<LinkedList<NTLoopsCombination>> nonTouching)
     {
         double overallDelta = 1;
 
         for (int i = 0; i < loops.size(); i++)
         {
-           overallDelta -= loops.get(i).gain;
+           overallDelta -= loops.get(i).getGain();
         }
 
         int sign = 1;
@@ -328,7 +328,7 @@ public class LoopFinder {
         {
             for (int j = 0; j < nonTouching.get(i).size(); j++)
             {
-                overallDelta += (sign) * (nonTouching.get(i).get(j).gain);
+                overallDelta += (sign) * (nonTouching.get(i).get(j).getGain());
             }
             sign *= -1;
         }
@@ -336,22 +336,22 @@ public class LoopFinder {
         return overallDelta;
     }
 
-    private void getPathDelta(ArrayList<Loop> loops, ArrayList<LinkedList<NTLoopsCombination>> nonTouching,
+    public void getPathDelta(ArrayList<Loop> loops, ArrayList<LinkedList<NTLoopsCombination>> nonTouching,
                                 ArrayList<ForwardPaths> paths)
     {
         double overallDelta ;
         for (ForwardPaths fp: paths) {
             overallDelta = 1;
             for (int i = 0; i < loops.size(); i++) {
-                if (areNT(fp.path, loops.get(i).loopNodes))
-                    overallDelta -= loops.get(i).gain;
+                if (areNT(fp.getPath(), loops.get(i).getLoopNodes()))
+                    overallDelta -= loops.get(i).getGain();
             }
 
             int sign = 1;
             for (int i = 0; i < nonTouching.size(); i++) {
                 for (int j = 0; j < nonTouching.get(i).size(); j++) {
-                    if (areNT(fp.path, loops.get(i).loopNodes))
-                        overallDelta += (sign) * (nonTouching.get(i).get(j).gain);
+                    if (areNT(fp.getPath(), loops.get(i).getLoopNodes()))
+                        overallDelta += (sign) * (nonTouching.get(i).get(j).getGain());
                 }
                 sign *= -1;
             }
@@ -364,7 +364,7 @@ public class LoopFinder {
         double TF = 0;
         for (ForwardPaths i : paths)
         {
-            TF += i.gain * i.delta;
+            TF += i.getGain() * i.delta;
         }
         TF /= delta;
 

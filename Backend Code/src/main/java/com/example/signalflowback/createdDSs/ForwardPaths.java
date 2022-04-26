@@ -1,4 +1,4 @@
-package com.example.signalflowback;
+package com.example.signalflowback.createdDSs;
 
 
 import java.util.ArrayList;
@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class ForwardPaths {
     ArrayList<String> path;
     double gain;
-    double delta;
+    public double delta;
 
     public ForwardPaths(ArrayList<String> path, double gain) {
         this.path = path;
@@ -27,5 +27,17 @@ public class ForwardPaths {
 
     public void setGain(int gain) {
         this.gain = gain;
+    }
+
+    public void setGain(double gain) {
+        this.gain = gain;
+    }
+
+    public double getDelta() {
+        return delta;
+    }
+
+    public void setDelta(double delta) {
+        this.delta = delta;
     }
 }

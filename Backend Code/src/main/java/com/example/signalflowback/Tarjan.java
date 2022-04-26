@@ -1,8 +1,10 @@
 package com.example.signalflowback;
 
+import com.example.signalflowback.createdDSs.Edge;
+import com.example.signalflowback.createdDSs.Node;
+
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
@@ -40,8 +42,8 @@ public class Tarjan {
         index++;
         stack.push(v);
         ArrayList<ArrayList<Node>> result = new ArrayList<>();
-        for (Edge e : v.edgeArrayList) {
-            Node w = e.toNode;
+        for (Edge e : v.getEdgeArrayList()) {
+            Node w = e.getToNode();
             if (lowLinkMap.size()==4 && w.getID()==3){
                 System.out.println();
             }
