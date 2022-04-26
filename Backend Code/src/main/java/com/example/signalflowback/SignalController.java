@@ -14,14 +14,13 @@ import java.util.LinkedList;
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 public class SignalController {
-    @Autowired
-    SignalService service;
+    MasonSolver service;
 
     @PostMapping("/initialize")
     public void initializeService(@RequestBody ArrayList<Node> graph, @RequestBody String start,
                                   @RequestBody String end)
     {
-        this.service = new SignalService(graph, start, end);
+        this.service = new MasonSolver(graph, start, end);
     }
 
     @GetMapping("/mason/loops")

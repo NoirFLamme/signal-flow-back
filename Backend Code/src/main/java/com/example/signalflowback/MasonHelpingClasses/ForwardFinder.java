@@ -1,4 +1,4 @@
-package com.example.signalflowback;
+package com.example.signalflowback.MasonHelpingClasses;
 
 import com.example.signalflowback.createdDSs.Edge;
 import com.example.signalflowback.createdDSs.ForwardPaths;
@@ -29,7 +29,7 @@ public class ForwardFinder {
 
 
 
-        return forwardPaths;
+        return this.forwardPaths;
     }
 
     private void swap(ArrayList<Node> a, String start, String end)
