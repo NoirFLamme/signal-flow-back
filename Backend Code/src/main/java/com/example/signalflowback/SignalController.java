@@ -16,11 +16,12 @@ import java.util.LinkedList;
 public class SignalController {
     MasonSolver service;
 
-    @PostMapping("/initialize")
-    public void initializeService(@RequestBody ArrayList<Node> graph, @RequestBody String start,
-                                  @RequestBody String end)
+    @PostMapping("/initialize/{st}/{ed}")
+    public void initializeService(@RequestBody ArrayList<Node> graph,
+                                  @PathVariable String st,
+                                  @PathVariable String ed )
     {
-        this.service = new MasonSolver(graph, start, end);
+        this.service = new MasonSolver(graph, st, ed);
     }
 
     @GetMapping("/mason/loops")
