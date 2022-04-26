@@ -10,10 +10,10 @@ public class Forward {
     ArrayList<String> pathAcc = new ArrayList<>();
     double gainAcc = 1;
     ArrayList<ForwardPaths> forwardPaths = new ArrayList<>();
-    public void getAllPaths(ArrayList<Node> graph)
+    public void getAllPaths(ArrayList<Node> graph, String start, String end)
     {
         boolean[] isVisited = new boolean[graph.size()];
-
+        swap(graph, start, end);
         pathAcc.add(graph.get(0).name);
 
         printAllPathsUtil(0, graph.size() - 1, isVisited, graph);
@@ -23,6 +23,31 @@ public class Forward {
             System.out.println(i.path);
             System.out.println(i.gain);
         }
+    }
+
+    private void swap(ArrayList<Node> a, String start, String end)
+    {
+        int startIndex = 0;
+        int endIndex = a.size() - 1;
+        for (int i = 0; i < a.size(); i++)
+        {
+            if (a.get(i).name.equals(start))
+            {
+                startIndex = i;
+            }
+            if (a.get(i).name.equals(end))
+            {
+                endIndex = i;
+            }
+        }
+
+        Node temp = a.get(0);
+        a.set(0, a.get(startIndex));
+        a.set(startIndex, temp);
+
+        temp = a.get(a.size() - 1);
+        a.set(a.size() - 1, a.get(endIndex));
+        a.set(endIndex, temp);
     }
 
 
@@ -93,6 +118,5 @@ public class Forward {
         ArrayList<Node> nodes = new ArrayList<>(Arrays.asList(n0,n1,n2,n3,n4));
         Forward yes = new Forward();
 
-        yes.getAllPaths(nodes);
     }
 }

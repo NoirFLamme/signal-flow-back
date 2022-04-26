@@ -242,7 +242,7 @@ public class LoopFinder {
         ArrayList<Node> nodes = new ArrayList<>(Arrays.asList(n1, n2, n3, n4, n5, n6, n7, n8, n9));
         LoopFinder myclass = new LoopFinder(nodes);
         Forward yes = new Forward();
-        yes.getAllPaths(nodes);
+        yes.getAllPaths(nodes, "1", "7");
         ArrayList<ForwardPaths> paths = yes.forwardPaths;
         ArrayList<Loop> loops = myclass.findAllLoops();
         System.out.println("Loops:");
@@ -251,6 +251,9 @@ public class LoopFinder {
         ArrayList<LinkedList<NTLoopsCombination>> nt = myclass.findNTLs(loops);
         printNT(nt);
         System.out.println(myclass.getOverallDelta(loops, nt));
+        myclass.getPathDelta(loops, nt, paths);
+        System.out.println(myclass.getTF(myclass.getOverallDelta(loops, nt), paths));
+
 
     }
 
@@ -332,5 +335,41 @@ public class LoopFinder {
 
         return overallDelta;
     }
+
+    private void getPathDelta(ArrayList<Loop> loops, ArrayList<LinkedList<NTLoopsCombination>> nonTouching,
+                                ArrayList<ForwardPaths> paths)
+    {
+        double overallDelta ;
+        for (ForwardPaths fp: paths) {
+            overallDelta = 1;
+            for (int i = 0; i < loops.size(); i++) {
+                if (areNT(fp.path, loops.get(i).loopNodes))
+                    overallDelta -= loops.get(i).gain;
+            }
+
+            int sign = 1;
+            for (int i = 0; i < nonTouching.size(); i++) {
+                for (int j = 0; j < nonTouching.get(i).size(); j++) {
+                    if (areNT(fp.path, loops.get(i).loopNodes))
+                        overallDelta += (sign) * (nonTouching.get(i).get(j).gain);
+                }
+                sign *= -1;
+            }
+            fp.delta = overallDelta;
+        }
+    }
+
+    private double getTF(double delta, ArrayList<ForwardPaths> paths)
+    {
+        double TF = 0;
+        for (ForwardPaths i : paths)
+        {
+            TF += i.gain * i.delta;
+        }
+        TF /= delta;
+
+        return TF;
+    }
+
 
 }
