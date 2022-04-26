@@ -8,7 +8,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class ForwardFinder {
-
+    private int getNode(String a, ArrayList<Node> graph)
+    {
+        for (int i = 0; i < graph.size(); i++)
+        {
+            if (graph.get(i).getName().equals(a))
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
 
     ArrayList<String> pathAcc = new ArrayList<>();
     double gainAcc = 1;
@@ -75,12 +85,12 @@ public class ForwardFinder {
         // Recur for all the vertices
         // adjacent to current vertex
         for (Edge i : graph.get(u).getEdgeArrayList()) {
-            if (!isVisited[graph.indexOf(i.getToNode())]) {
+            if (!isVisited[getNode(i.getToNode().getName(), graph)]) {
                 // store current node
                 // in path[]
                 pathAcc.add(i.getToNode().getName());
                 gainAcc *= i.getGain();
-                printAllPathsUtil(graph.indexOf(i.getToNode()), d, isVisited, graph);
+                printAllPathsUtil(getNode(i.getToNode().getName(), graph), d, isVisited, graph);
 
                 // remove current node
                 // in path[]

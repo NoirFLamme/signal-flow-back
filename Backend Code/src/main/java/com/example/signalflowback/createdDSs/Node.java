@@ -6,11 +6,14 @@ public class Node {
      String name;
      ArrayList<Edge> edgeArrayList;
 
-
-
     public Node(String name, ArrayList<Edge> edgeArrayList) {
         this.name = name;
         this.edgeArrayList = edgeArrayList;
+    }
+
+    public Node(String name) {
+        this.name = name;
+        this.edgeArrayList = new ArrayList<>();
     }
 
     public String getName() {
@@ -28,6 +31,8 @@ public class Node {
     public void setEdgeArrayList(ArrayList<Edge> edgeArrayList) {
         this.edgeArrayList = edgeArrayList;
     }
+
+    public void addEdge(Edge edge) { this.edgeArrayList.add(edge); }
 
     public int getID(){ return Integer.parseInt(this.name)-1;}
 

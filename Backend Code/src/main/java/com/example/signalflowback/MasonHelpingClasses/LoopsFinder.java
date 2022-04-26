@@ -161,6 +161,7 @@ public class LoopsFinder {
             }
         }
         int i = 1;
+        if (nonTouching.size() == 0) {return nonTouching;}
         while (true) {
             foundCombination = false;
             for (int iOLoop = 0; iOLoop < loops.size(); iOLoop++) {

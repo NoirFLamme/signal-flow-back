@@ -2,7 +2,7 @@ package com.example.signalflowback.createdDSs;
 
 public class Edge {
     final int gain;
-    final Node toNode;
+    private Node toNode;
 
 
     public Edge(int gain, Node toNode) {
@@ -18,7 +18,9 @@ public class Edge {
         return toNode;
     }
 
-
+    public void setToNode(Node toNode) {
+        this.toNode = toNode;
+    }
 }
 
 
