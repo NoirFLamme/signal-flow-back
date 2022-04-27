@@ -1,5 +1,7 @@
 package com.example.signalflowback.Tests;
 
+import com.example.signalflowback.Adapter.Adapter;
+import com.example.signalflowback.Adapter.NTLoopsCombinationF;
 import com.example.signalflowback.MasonHelpingClasses.ForwardFinder;
 import com.example.signalflowback.MasonHelpingClasses.LoopsFinder;
 import com.example.signalflowback.createdDSs.*;
@@ -11,7 +13,7 @@ import java.util.LinkedList;
 public class Test4 {
     public static void main(String[] args) throws InterruptedException {
 
-        System.out.println("Test 3");
+        System.out.println("Test 4");
         ArrayList<Edge> empty = new ArrayList<>();
         Node n1 = new Node("1", empty);
         Node n2 = new Node("2", empty);
@@ -66,6 +68,8 @@ public class Test4 {
         printLoopList(loops);
         System.out.println("Non Touching Loops:");
         ArrayList<LinkedList<NTLoopsCombination>> nt = myclass.findNTLs(loops);
+        Adapter adamptMe = new Adapter();
+        ArrayList<LinkedList<NTLoopsCombinationF>> ntF =  adamptMe.frontComboLarge(nt);
         printNT(nt);
         System.out.println(myclass.getOverallDelta(loops, nt));
         myclass.getPathDelta(loops, nt, paths);

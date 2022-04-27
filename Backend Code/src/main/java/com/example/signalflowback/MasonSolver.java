@@ -1,5 +1,7 @@
 package com.example.signalflowback;
 
+import com.example.signalflowback.Adapter.Adapter;
+import com.example.signalflowback.Adapter.NTLoopsCombinationF;
 import com.example.signalflowback.createdDSs.ForwardPaths;
 import com.example.signalflowback.createdDSs.Loop;
 import com.example.signalflowback.createdDSs.NTLoopsCombination;
@@ -15,6 +17,7 @@ public class MasonSolver {
 
     LoopsFinder evaluator;
     ForwardFinder pathFinder;
+    Adapter adaptMe;
     ArrayList<ForwardPaths> paths;
     ArrayList<Loop> loops;
     ArrayList<LinkedList<NTLoopsCombination>> ntLoops;
@@ -43,10 +46,10 @@ public class MasonSolver {
         return this.paths;
     }
 
-    public ArrayList<LinkedList<NTLoopsCombination>> returnNTloops()
+    public ArrayList<LinkedList<NTLoopsCombinationF>> returnNTloops()
     {
 
-        return ntLoops;
+        return this.adaptMe.frontComboLarge(ntLoops);
     }
 
     public double returnTF()

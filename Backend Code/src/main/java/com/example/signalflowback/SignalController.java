@@ -2,6 +2,7 @@ package com.example.signalflowback;
 
 
 import com.example.signalflowback.Adapter.Adapter;
+import com.example.signalflowback.Adapter.NTLoopsCombinationF;
 import com.example.signalflowback.Adapter.NodeF;
 import com.example.signalflowback.createdDSs.*;
 import org.springframework.web.bind.annotation.*;
@@ -69,7 +70,7 @@ public class SignalController {
     }
 
     @GetMapping("/mason/ntloops")
-    public ArrayList<LinkedList<NTLoopsCombination>> getNT()
+    public ArrayList<LinkedList<NTLoopsCombinationF>> getNT()
     {
         return this.service.returnNTloops();
     }
