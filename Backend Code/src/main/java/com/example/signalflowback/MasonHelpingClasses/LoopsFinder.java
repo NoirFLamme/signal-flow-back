@@ -173,9 +173,15 @@ public class LoopsFinder {
                         mergedLoops.addAll(nonTouching.get(i).get(j).getNodesAfterJoining());
                         double mergedGains = loops.get(iOLoop).getGain() * nonTouching.get(i).get(j).getGain();
                         Set<Loop> mergeSet = new HashSet<>();
-                        mergeSet.add(loops.get(i));
+                        mergeSet.add(loops.get(iOLoop));
                         mergeSet.addAll(nonTouching.get(i).get(j).getNTLoops());
-                        nonTouching.get(i+1).add(new NTLoopsCombination(mergedGains,mergeSet,mergedLoops));
+                        NTLoopsCombination currentComb = new NTLoopsCombination(mergedGains,mergeSet,mergedLoops);
+                        boolean foundDuplicate = false;
+                        for (NTLoopsCombination ntc : nonTouching.get(i+1))
+                            if (!ntc.equals(currentComb))
+                                foundDuplicate = true;
+                        if (!foundDuplicate)
+                            nonTouching.get(i+1).add(currentComb);
                     }
                 }
             }
