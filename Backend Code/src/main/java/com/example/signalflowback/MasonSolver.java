@@ -1,14 +1,8 @@
 package com.example.signalflowback;
 
 import com.example.signalflowback.Adapter.Adapter;
-import com.example.signalflowback.Adapter.NTLoopsCombinationF;
-import com.example.signalflowback.createdDSs.ForwardPaths;
-import com.example.signalflowback.createdDSs.Loop;
-import com.example.signalflowback.createdDSs.NTLoopsCombination;
-import com.example.signalflowback.createdDSs.Node;
-import com.example.signalflowback.MasonHelpingClasses.ForwardFinder;
-import com.example.signalflowback.MasonHelpingClasses.LoopsFinder;
-import org.springframework.stereotype.Service;
+import com.example.signalflowback.createdDSs.*;
+import com.example.signalflowback.MasonHelpingClasses.*;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

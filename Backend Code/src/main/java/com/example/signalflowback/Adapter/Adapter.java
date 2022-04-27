@@ -1,9 +1,6 @@
 package com.example.signalflowback.Adapter;
 
-import com.example.signalflowback.createdDSs.Edge;
-import com.example.signalflowback.createdDSs.Loop;
-import com.example.signalflowback.createdDSs.NTLoopsCombination;
-import com.example.signalflowback.createdDSs.Node;
+import com.example.signalflowback.createdDSs.*;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
