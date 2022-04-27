@@ -45,6 +45,7 @@ public class MasonSolver {
 
     public ArrayList<LinkedList<NTLoopsCombination>> returnNTloops()
     {
+
         return ntLoops;
     }
 
@@ -54,4 +55,7 @@ public class MasonSolver {
     }
 
 
+    public double returnOverallDelta() {
+        return this.overallDelta;
+    }
 }

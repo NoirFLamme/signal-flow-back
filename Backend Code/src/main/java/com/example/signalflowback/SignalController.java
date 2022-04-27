@@ -85,4 +85,9 @@ public class SignalController {
     {
         return this.service.returnTF();
     }
+
+    @GetMapping("/mason/overallDelta")
+    public double getOverallDelta() {
+        return this.service.returnOverallDelta();
+    }
 }

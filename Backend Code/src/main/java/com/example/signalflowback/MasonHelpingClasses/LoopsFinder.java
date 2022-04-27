@@ -160,13 +160,14 @@ public class LoopsFinder {
                 }
             }
         }
-        int i = 1;
+        int i = 0;
         if (nonTouching.size() == 0) {return nonTouching;}
         while (true) {
             foundCombination = false;
             for (int iOLoop = 0; iOLoop < loops.size(); iOLoop++) {
                 for (int j = 0; j < nonTouching.get(i).size(); j++) {
-                    if (this.areNT(loops.get(iOLoop).getLoopNodes(), (ArrayList<String>) nonTouching.get(i).get(j).getNodesAfterJoining())) {
+                    ArrayList<String> temp = new ArrayList<>( nonTouching.get(i).get(j).getNodesAfterJoining());
+                    if (this.areNT(loops.get(iOLoop).getLoopNodes(), temp)) {
                         foundCombination = true;
                         Set<String> mergedLoops = new HashSet<>(loops.get(iOLoop).getLoopNodes());
                         mergedLoops.addAll(nonTouching.get(i).get(j).getNodesAfterJoining());
@@ -174,7 +175,7 @@ public class LoopsFinder {
                         Set<Loop> mergeSet = new HashSet<>();
                         mergeSet.add(loops.get(i));
                         mergeSet.addAll(nonTouching.get(i).get(j).getNTLoops());
-                        nonTouching.get(i).add(new NTLoopsCombination(mergedGains,mergeSet,mergedLoops));
+                        nonTouching.get(i+1).add(new NTLoopsCombination(mergedGains,mergeSet,mergedLoops));
                     }
                 }
             }
