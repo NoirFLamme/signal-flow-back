@@ -13,6 +13,7 @@ import java.util.LinkedList;
 public class Test5 {
     public static void main(String[] args) throws InterruptedException {
 
+
         System.out.println("Test 4");
         ArrayList<Edge> empty = new ArrayList<>();
         Node n1 = new Node("1", empty);
@@ -72,6 +73,7 @@ public class Test5 {
         LoopsFinder myclass = new LoopsFinder(nodes);
         ForwardFinder yes = new ForwardFinder();
         ArrayList<ForwardPaths> paths = yes.getAllPaths(nodes, "1", "8");
+
         ArrayList<Loop> loops = myclass.findAllLoops();
         System.out.println("Loops:");
         printLoopList(loops);

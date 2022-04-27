@@ -1,7 +1,6 @@
 package com.example.signalflowback.MasonHelpingClasses.loopFindingHelpingClasses;
 
-import com.example.signalflowback.createdDSs.Edge;
-import com.example.signalflowback.createdDSs.Node;
+import com.example.signalflowback.createdDSs.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;

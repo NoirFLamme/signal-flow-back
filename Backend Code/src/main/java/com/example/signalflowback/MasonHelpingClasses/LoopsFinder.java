@@ -1,12 +1,8 @@
 package com.example.signalflowback.MasonHelpingClasses;
 
-
 import com.example.signalflowback.MasonHelpingClasses.loopFindingHelpingClasses.Tarjan;
 import com.example.signalflowback.createdDSs.*;
-
 import java.util.*;
-
-import static java.lang.Thread.sleep;
 
 public class LoopsFinder {
 
@@ -42,6 +38,18 @@ public class LoopsFinder {
                 startIndex = leastVertex.getID() + 1;
             } else {
                 break;
+            }
+        }
+        for (Node n : graph){
+            for (Edge e : n.getEdgeArrayList()){
+                Node toNode = e.getToNode();
+                if (n.equals(toNode)){
+                    ArrayList<String > temp = new ArrayList<>();
+                    temp.add(n.getName());
+                    temp.add(n.getName());
+                    Loop loop = new Loop(temp,e.getGain());
+                    loops.add(loop);
+                }
             }
         }
         return loops;

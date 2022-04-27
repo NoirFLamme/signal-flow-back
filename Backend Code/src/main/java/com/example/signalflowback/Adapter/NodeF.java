@@ -1,7 +1,5 @@
 package com.example.signalflowback.Adapter;
 
-import com.example.signalflowback.Adapter.EdgeF;
-
 import java.util.ArrayList;
 
 public class NodeF {
