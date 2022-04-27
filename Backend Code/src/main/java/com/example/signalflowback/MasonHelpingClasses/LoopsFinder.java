@@ -178,7 +178,7 @@ public class LoopsFinder {
                         NTLoopsCombination currentComb = new NTLoopsCombination(mergedGains,mergeSet,mergedLoops);
                         boolean foundDuplicate = false;
                         for (NTLoopsCombination ntc : nonTouching.get(i+1))
-                            if (!ntc.equals(currentComb))
+                            if (ntc.getNodesAfterJoining().equals(currentComb.getNodesAfterJoining()))
                                 foundDuplicate = true;
                         if (!foundDuplicate)
                             nonTouching.get(i+1).add(currentComb);
