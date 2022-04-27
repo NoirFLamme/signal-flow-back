@@ -72,8 +72,10 @@ public class SignalController {
     @GetMapping("/mason/ntloops")
     public ArrayList<LinkedList<NTLoopsCombinationF>> getNT()
     {
-        return this.service.returnNTloops();
+        Adapter adapter = new Adapter();
+        return adapter.frontComboLarge(this.service.returnNTloops());
     }
+
 
     @GetMapping("/mason/paths")
     public ArrayList<ForwardPaths> getPaths()

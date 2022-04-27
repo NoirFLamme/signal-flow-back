@@ -46,11 +46,18 @@ public class MasonSolver {
         return this.paths;
     }
 
-    public ArrayList<LinkedList<NTLoopsCombinationF>> returnNTloops()
-    {
 
-        return this.adaptMe.frontComboLarge(ntLoops);
+    public ArrayList<LinkedList<NTLoopsCombination>> returnNTloops()
+    {
+//        if(this.adaptMe == null) this.adaptMe = new Adapter();
+//        return this.adaptMe.frontComboLarge(ntLoops);
+        return this.ntLoops;
     }
+//    public ArrayList<LinkedList<NTLoopsCombinationF>> returnNTloops()
+//    {
+////        if(this.adaptMe == null) this.adaptMe = new Adapter();
+////        return this.adaptMe.frontComboLarge(ntLoops);
+//    }
 
     public double returnTF()
     {
